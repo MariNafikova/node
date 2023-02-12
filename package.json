@@ -1,0 +1,9 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "inquirer": "^9.1.4"
+  },
+  "type": "module"
+}
