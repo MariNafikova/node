@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+<body>
+<input type="text" id="input" autofocus>
+<input type="submit" id="send" value="Send">
+<div id="messages"></div>
+</body>
+<script type="text/javascript">
+    let messageArea = document.getElementById("messages");
+	const socket = io('localhost:3000');
+
+	const sessionID = localStorage.getItem("sessionID");
+	if (sessionID) {
+		socket.auth = {sessionID};
+		socket.connect();
+	}
+	socket.on("session", ({sessionID, userID, username}) => {
+		socket.auth = {sessionID};
+		localStorage.setItem("sessionID", sessionID);
+		localStorage.setItem("username", username);
+		socket.userID = userID;
+	});
+
+    socket.on('connect', function () {
+		console.log('Connection successfully')
+	});
+	socket.on('disconnect', function () {
+		console.log('Connection closed')
+	});
+
+	document.getElementById('send').onclick = function () {
+		socket.emit('CLIENT_MSG', {
+			msg: {
+				username: localStorage.getItem('username'),
+				message: document.getElementById('input').value
+			}
+		});
+		document.getElementById('input').value = '';
+	};
+
+	socket.on('SERVER_MSG', function (data) {
+		const msgSpan = document.createElement('span').innerHTML = data.msg.username + ": " + data.msg.message;
+		document.getElementById('messages').append(msgSpan);
+		document.getElementById('messages').append(document.createElement('br'));
+	});
+	socket.on('CONN_EVENT', function (data) {
+		let name = document.createElement("p");
+		name.style.backgroundColor = "green";
+		name.style.width = "100%";
+		name.style.textAlign = "center";
+		name.style.color = "white";
+		name.textContent = data.msg;
+		messageArea.appendChild(name);
+	});
+	socket.on('RECONN_EVENT', function (data) {
+		let name = document.createElement("p");
+		name.style.backgroundColor = "orange";
+		name.style.width = "100%";
+		name.style.textAlign = "center";
+		name.style.color = "white";
+		name.textContent = data.msg;
+		messageArea.appendChild(name);
+	});
+	socket.on('DISCONN_EVENT', function (data) {
+		let name = document.createElement("p");
+		name.style.backgroundColor = "red";
+		name.style.width = "100%";
+		name.style.textAlign = "center";
+		name.style.color = "white";
+		name.textContent = data.msg;
+		messageArea.appendChild(name);
+	});
+</script>
+</html>
