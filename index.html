@@ -2,18 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>HomeWork 5 + 6</title>
     <script defer="defer" src="js/main.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
 </head>
 <body>
+<div><p id="online-counter"></p></div>
 <span class="link" id="routeBack">Назад</span>
 </br>
 </br>
 Содержимое папки:
 </br>
 <div id="explorer"></div>
-<div id="file-content"></div>
+</br>
+<label for="file-content">Содержимое файла:</label>
+<input id="searchInput" placeholder="Введите поисковый запрос" style="width: 300px">
+<button id="searchButton">Найти</button>
+</br>
+</br>
+<div id="matches-found"></div>
+<div id="file-content" class="tarea"></div>
 </body>
 <style>
     span.link {
@@ -21,9 +30,28 @@
         text-decoration: underline;
         cursor: pointer;
     }
-
     span.link:hover {
         color: #0249a9;
+    }
+    label,
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    div.tarea {
+        padding: 10px;
+        width: 98%;
+        min-height: 100%;
+        height: auto;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 1px 1px 1px #999;
+        background-color: white;
+        font: small courier, monospace black;
+        font-family: monospace;
+        white-space: pre;
+        overflow: auto;
     }
 </style>
 </html>

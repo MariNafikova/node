@@ -30,6 +30,12 @@ export function handleRender(response) {
 
 export function openFile(path) {
   getFileContent(path).then((res) => {
-    document.getElementById("file-content").innerHTML = res.data.result;
+    const textArea = document.getElementById("file-content");
+    textArea.innerHTML = res.data.result;
+    textArea.setAttribute("style", "height:" + 0);
+    textArea.setAttribute(
+      "style",
+      "height:" + textArea.scrollHeight + "px;overflow-y:hidden;"
+    );
   });
 }
